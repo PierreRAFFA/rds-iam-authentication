@@ -1,0 +1,22 @@
+
+const {
+  HOST,
+  PORT,
+  RDS_REMOTE_HOST,
+  RDS_REMOTE_PORT,
+  RDS_LOCAL_HOST,
+  RDS_LOCAL_PORT,
+  RDS_DATABASE,
+  RDS_USER,
+} = process.env
+
+export default {
+  HOST,
+  PORT,
+  RDS_REMOTE_HOST,
+  RDS_REMOTE_PORT,
+  RDS_LOCAL_HOST,
+  RDS_LOCAL_PORT,
+  RDS_DATABASE,
+  RDS_USER,
+}
