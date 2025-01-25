@@ -1,0 +1,69 @@
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: Role
+metadata:
+  name: {{ include "demoapp.iamRoleName" . }}
+spec:
+  forProvider:
+    assumeRolePolicyDocument: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "Federated": "arn:aws:iam::{{ .Values.global.awsAccountId }}:oidc-provider/{{ .Values.global.oidcIssuer }}"
+                },
+                "Action": "sts:AssumeRoleWithWebIdentity",
+                "Condition": {
+                    "StringEquals": {
+                        "{{ .Values.global.oidcIssuer }}:aud": "sts.amazonaws.com",
+                        "{{ .Values.global.oidcIssuer }}:sub": "system:serviceaccount:{{ .Release.Name }}:{{ include "demoapp.fullname" . }}"
+                    }
+                }
+            }
+        ]
+      }
+    tags:
+      - key: crossplane-kind
+        value: role.iam.aws.crossplane.io
+      - key: crossplane-name
+        value: {{ include "demoapp.iamRoleName" . }}
+---
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: Policy
+metadata:
+  name: {{ include "demoapp.rdsPolicyName" . }}
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    name: {{ include "demoapp.rdsPolicyName" . }}
+    description:  "Allow RDS Connect"
+    document: >
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": "rds-db:connect",
+                  "Resource": [
+                      "arn:aws:rds-db:us-east-2:000000000000:dbuser:*/{{ include "demoapp.fullname" . }}"
+                  ]
+              }
+          ]
+      }
+    tags:
+      - key: crossplane-kind
+        value: policy.iam.aws.crossplane.io
+      - key: crossplane-name
+        value: {{ include "demoapp.rdsPolicyName" . }}
+---
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: RolePolicyAttachment
+metadata:
+  name: {{ include "demoapp.rdsPolicyName" . }}
+spec:
+  forProvider:
+    policyArnRef:
+      name: {{ include "demoapp.rdsPolicyName" . }}
+    roleNameRef:
+      name: {{ include "demoapp.iamRoleName" . }}
