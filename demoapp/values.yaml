@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 global:
   awsAccountId: "000000000000"
-  oidcIssuer: oidc.eks.us-east-2.amazonaws.com/id/4798FC6FF49168DF75B3075C60B5C5EE
+  oidcIssuer: oidc.eks.us-east-2.amazonaws.com/id/1234567812345678
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
@@ -28,11 +28,11 @@ env:
 - name: PORT
   value: "3000"
 - name: RDS_REMOTE_HOST
-  value: pierre1.cluster-ck1sf8cklfwf.us-east-2.rds.amazonaws.com
+  value: demoapp.cluster-ck1sf8cklfwf.us-east-2.rds.amazonaws.com
 - name: RDS_REMOTE_PORT
   value: "5432"
 - name: RDS_LOCAL_HOST
-  value: pierre1.cluster-ck1sf8cklfwf.us-east-2.rds.amazonaws.com
+  value: demoapp.cluster-ck1sf8cklfwf.us-east-2.rds.amazonaws.com
 - name: RDS_LOCAL_PORT
   value: "5432"
 - name: RDS_DATABASE
