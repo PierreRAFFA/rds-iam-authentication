@@ -46,7 +46,7 @@ spec:
                   "Effect": "Allow",
                   "Action": "rds-db:connect",
                   "Resource": [
-                      "arn:aws:rds-db:us-east-2:000000000000:dbuser:*/{{ include "demoapp.fullname" . }}"
+                      "arn:aws:rds-db:us-east-2:{{ .Values.global.awsAccountId }}:dbuser:*/{{ include "demoapp.fullname" . }}"
                   ]
               }
           ]
